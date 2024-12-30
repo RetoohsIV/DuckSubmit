@@ -1,0 +1,73 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+}
+
+.header-left {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.header-right {
+    font-size: 16px;
+}
+
+.header-link {
+    color: white;
+    text-decoration: none;
+    padding: 0 10px;
+}
+
+.header-link:hover {
+    text-decoration: underline;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f3d6;
+}
+
+
+/*------ Vertical Menu ( Select course ) ------ */
+.vertical-menu {
+    width: 200px;
+    height: 150px;
+    overflow-y: auto;
+  }
+  
+  .vertical-menu a {
+    background-color: #eee;
+    color: black;
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+  }
+  
+  .vertical-menu a:hover {
+    background-color: #ccc;
+  }
+  
+  .vertical-menu a.active {
+    background-color: #04AA6D;
+    color: white;
+  }
