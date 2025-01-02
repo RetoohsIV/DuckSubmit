@@ -36,8 +36,7 @@ coursesarray.forEach((coursename) => {
 
 
     const course = document.createElement('a');
-    console.log(`Checking course: ${coursename}`);
-
+    
     if (istutor.includes(coursename) && (localStorage.getItem('username') === "student2")) {
         course.textContent = coursename + " (TUTOR)";
     } else {
@@ -55,6 +54,7 @@ coursesarray.forEach((coursename) => {
 
         // Show the drag and drop box with corresponding content
         contentBox.classList.add('show');
+        console.log(`Checking course: ${coursename}`);
         contentBox.textContent = `-ToDo- Drag and Drop, Submit....  ${coursename}`;
     });
 });
@@ -75,4 +75,32 @@ selectCourseLink.addEventListener('click', function(event) {
 
     // Hide the content box when the dropdown is reopened
     contentBox.classList.remove('show');
+});
+
+
+
+// Email-alerts-settings dropdown
+const settingsLink = document.getElementById('settings-link');
+const settingsemailalerts = document.getElementById('settings-email-alerts');
+
+settingsLink.addEventListener('click', function(event) {
+    
+    if (settingsemailalerts.style.display === 'block') {
+        settingsemailalerts.style.display = 'none';
+    } else {
+        settingsemailalerts.style.display = 'block';
+    }
+});
+
+//These are just for testing purposes , can be removed later
+document.getElementById('submission').addEventListener('change', function(event) {
+    console.log('Submission:', event.target.checked);
+});
+
+document.getElementById('graded').addEventListener('change', function(event) {
+    console.log('Graded', event.target.checked);
+});
+
+document.getElementById('deadline').addEventListener('change', function(event) {
+    console.log('Deadline:', event.target.checked);
 });
