@@ -287,3 +287,21 @@ main {
 .alternative-upload-btn:hover {
     background-color: #005bb5;
 }
+
+/* Duck */
+.duck-container {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1000;
+}
+
+.duck {
+    width: 50px;
+    height: auto;
+    position: absolute; /* pictures on top of each other */
+}
+
+.hidden {
+    display: none; /* picture is hidden */
+}
