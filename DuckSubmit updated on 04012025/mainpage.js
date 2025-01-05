@@ -306,33 +306,3 @@ function initializeDragAndDrop() {
         link.click();
     });
 }
-
-    // Duck functionality
-    function switchDuck(duckId) {
-        // all ducks hidden
-        document.querySelectorAll('.duck').forEach(duck => {
-            duck.classList.add('hidden');
-        });
-    
-        // show wanted duck
-        document.getElementById(duckId).classList.remove('hidden');
-    }
-    function showAngryDuck() {
-        switchDuck('angry-duck'); // show Angry Duck
-    
-        // after 3 seconds back to Sleeping Duck
-        setTimeout(() => switchDuck('sleeping-duck'), 3000);
-    }
-            // safe original alertfunction for Handle File Uplpad
-            const originalAlert = window.alert;
-
-            // copy alert function
-            window.alert = function(message) {
-            // get original alert
-            originalAlert(message);
-
-            // check if specific alert message is shown
-            if (message === 'Invalid file type. Please upload a ZIP or PDF file.') {
-            showAngryDuck(); // show angry duck
-            }
-            };
