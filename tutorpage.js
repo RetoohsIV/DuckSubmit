@@ -31,6 +31,51 @@ const contentBox = document.createElement('div');
 contentBox.classList.add('content-box');
 menuContainer.appendChild(contentBox); 
 
+// Function to create a table
+function createCourseTable(coursename) {
+    
+    // Prevents to show multiple tables
+    const existingTable = contentBox.querySelector('table');
+    if (existingTable) {
+        existingTable.remove();
+    }
+
+    // Headers definition
+    const headers = ["Assignment", "Date", "Deadline", "Status", "Download", "Upload", "Grade"];
+
+    // Create a new table for the selected course
+    const table = document.createElement('table');
+    table.classList.add('context-table');
+    const thead = document.createElement('thead');
+    const tbody = document.createElement('tbody');
+    
+    // Table headers
+    const headerRow = document.createElement('tr');
+    for (let i = 1; i <= 7; i++) {
+        const th = document.createElement('th');
+        th.textContent = headers[i - 1];
+        headerRow.appendChild(th);
+    }
+    thead.appendChild(headerRow);
+    
+    // Table rows (Am besten eine Liste/Array/Txt durchgehen für die Einträge)
+    for (let i = 0; i < 5; i++) { 
+        const row = document.createElement('tr');
+        for (let j = 0; j < 7; j++) { 
+            const td = document.createElement('td');
+            td.textContent = '...';
+            row.appendChild(td);
+        }
+        tbody.appendChild(row);
+    }
+    
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    
+    // Append the newly created table to the contentBox
+    contentBox.appendChild(table);
+}
+
 // Loop through the courses array and create the dropdown dynamically
 coursesarray.forEach((coursename) => {
 
@@ -54,29 +99,13 @@ coursesarray.forEach((coursename) => {
 
         // Show the drag and drop box with corresponding content
         contentBox.classList.add('show');
+
+        // Create the table for the selected course
+        createCourseTable(coursename);
 		
 		//*updated here for drag-and-drop upload box dynamically*//
         console.log(`Checking course: ${coursename}`);
-		// Clear existing content and add the drag-and-drop upload functionality
-        contentBox.innerHTML = `
-		<div id="drop-area" class="drop-area">
-			<img src="images/file-symbol.jpeg" alt="Upload Icon" class="upload-icon">
-			<p>Drag & Drop your file here</p>
-			<p class="supported-types">Supports: ZIP, PDF</p>
-			<input type="file" id="file-input" accept=".zip, .pdf" style="display: none;">
-		</div>
-		<div class="button-container">
-			<button id="alternative-upload-btn" class="alternative-upload-btn">Upload File</button>
-		</div>
-		<div class="button-container">
-			<button id="download-btn" class="download-btn" disabled>Download</button>
-		</div>
-	`;
-
-
-
-        // Initialize drag-and-drop functionality for this course
-        initializeDragAndDrop();
+		
     });
 });
 
@@ -188,11 +217,11 @@ window.addEventListener('click', (event) => {
 //* Overview setting*//
 // data for courses and their statuses for overview
 const coursesStatus = [
-    { name: "G.d Mensch-Computer Interaktion", submission: "Submitted", deadline: "2025-01-31", grade: "A+" },
-    { name: "G.d Betriebssysteme", submission: "Not Submitted", deadline: "2025-02-15", grade: "B" },
-    { name: "Lineare Algebra", submission: "Submitted", deadline: "2025-01-25", grade: "A" },
-    { name: "Data Science", submission: "In Progress", deadline: "2025-03-01", grade: "Pending" },
-    { name: "Diskrete Strukturen", submission: "Not Submitted", deadline: "2025-02-10", grade: "C" },
+    { name: "G.d Mensch-Computer Interaktion", grading: "Done", deadline: "2025-02-06"},
+    { name: "G.d Betriebssysteme", grading: "Done", deadline: "2025-02-21"},
+    { name: "Lineare Algebra", grading: "In Progress", deadline: "2025-01-31"},
+    { name: "Data Science", grading: "In Progress", deadline: "2025-03-07"},
+    { name: "Diskrete Strukturen", grading: "Done", deadline: "2025-02-16"},
 ];
 
 // Get Overview modal elements
@@ -211,9 +240,8 @@ function showOverviewModal() {
         const listItem = document.createElement('li');
         listItem.innerHTML = `
             <strong>Course:</strong> ${course.name}<br>
-            <strong>Submission Status:</strong> ${course.submission}<br>
+            <strong>Grading Status:</strong> ${course.grading}<br>
             <strong>Deadline:</strong> ${course.deadline}<br>
-            <strong>Grade:</strong> ${course.grade}
         `;
         overviewList.appendChild(listItem);
     });
@@ -239,70 +267,3 @@ window.addEventListener('click', (event) => {
         overviewModal.style.display = 'none';
     }
 });
-
-//* drag and drop function*//
-// Function to initialize drag-and-drop functionality
-function initializeDragAndDrop() {
-    const dropArea = document.getElementById('drop-area');
-    const fileInput = document.getElementById('file-input');
-    const alternativeUploadBtn = document.getElementById('alternative-upload-btn');
-    const downloadBtn = document.getElementById('download-btn');
-
-    let uploadedFile = null;
-
-    // Highlight drop area on drag events
-    dropArea.addEventListener('dragover', (event) => {
-        event.preventDefault();
-        dropArea.style.backgroundColor = '#f0f8ff';
-    });
-
-    dropArea.addEventListener('dragleave', () => {
-        dropArea.style.backgroundColor = '#ffffff';
-    });
-
-    // Handle file drop
-    dropArea.addEventListener('drop', (event) => {
-        event.preventDefault();
-        dropArea.style.backgroundColor = '#ffffff';
-
-        const files = event.dataTransfer.files;
-        if (files.length > 0) {
-            handleFileUpload(files[0]);
-        }
-    });
-
-    // Handle file selection via alternative upload button
-    alternativeUploadBtn.addEventListener('click', () => {
-        fileInput.click();
-    });
-
-    fileInput.addEventListener('change', (event) => {
-        const files = event.target.files;
-        if (files.length > 0) {
-            handleFileUpload(files[0]);
-        }
-    });
-
-    // Handle file upload
-    function handleFileUpload(file) {
-        const allowedTypes = ['application/zip', 'application/pdf'];
-        if (!allowedTypes.includes(file.type)) {
-            alert('Invalid file type. Please upload a ZIP or PDF file.');
-            return;
-        }
-
-        uploadedFile = file;
-        alert(`File "${file.name}" uploaded successfully.`);
-        downloadBtn.disabled = false;
-    }
-
-    // Download button functionality
-    downloadBtn.addEventListener('click', () => {
-        if (!uploadedFile) return;
-
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(uploadedFile);
-        link.download = uploadedFile.name;
-        link.click();
-    });
-}
