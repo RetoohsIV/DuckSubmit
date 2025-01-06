@@ -271,7 +271,23 @@ function initializeDragAndDrop() {
         dropArea.style.backgroundColor = '#ffffff';
 
         files = event.dataTransfer.files;
-        submitBtn.disabled = false;
+
+        const allowedTypes = ['application/zip', 'application/pdf'];
+        if (!allowedTypes.includes(files[0].type)) {
+            alert('Invalid file type. Please upload a ZIP or PDF file.');
+            return;
+        }
+
+        if (files.length > 0) {
+            uploadedFile = files[0];
+            dropArea.innerHTML = `
+                <img src="images/file-symbol.jpeg" alt="Upload Icon" class="upload-icon">
+                <p>${uploadedFile.name}</p> <!-- Display the file name here -->
+                <p class="supported-types">Supports: ZIP, PDF</p>
+            `;
+
+            submitBtn.disabled = false;
+        }
     });
 
     // Handle file selection via alternative upload button
@@ -281,16 +297,27 @@ function initializeDragAndDrop() {
 
     fileInput.addEventListener('change', (event) => {
         files = event.target.files;
-        submitBtn.disabled = false;
+
+        const allowedTypes = ['application/zip', 'application/pdf'];
+        if (!allowedTypes.includes(files[0].type)) {
+            alert('Invalid file type. Please upload a ZIP or PDF file.');
+            return;
+        }
+
+        if (files.length > 0) {
+            uploadedFile = files[0];
+            dropArea.innerHTML = `
+                <img src="images/file-symbol.jpeg" alt="Upload Icon" class="upload-icon">
+                <p>${uploadedFile.name}</p> <!-- Display the file name here -->
+                <p class="supported-types">Supports: ZIP, PDF</p>
+            `;
+
+            submitBtn.disabled = false;
+        }
     });
 
     // Handle file upload
     function handleFileUpload(file) {
-        const allowedTypes = ['application/zip', 'application/pdf'];
-        if (!allowedTypes.includes(file.type)) {
-            alert('Invalid file type. Please upload a ZIP or PDF file.');
-            return;
-        }
 
         uploadedFile = file;
         alert(`File "${file.name}" uploaded successfully.`);
@@ -313,5 +340,12 @@ function initializeDragAndDrop() {
             handleFileUpload(files[0]);
         }
         submitBtn.disabled = true;
+
+        dropArea.innerHTML = `
+        <img src="images/file-symbol.jpeg" alt="Upload Icon" class="upload-icon">
+        <p>Drag & Drop your file here</p>
+        <p class="supported-types">Supports: ZIP, PDF</p>
+    `;
+
     });
 }
