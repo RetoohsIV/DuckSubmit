@@ -71,6 +71,9 @@ coursesarray.forEach((coursename) => {
 		<div class="button-container">
 			<button id="download-btn" class="download-btn" disabled>Download</button>
 		</div>
+        <div class="button-container">
+			<button id="submit-btn" class="submit-btn" disabled>Submit</button>
+		</div>
 	`;
 
 
@@ -152,24 +155,24 @@ function showPopup(message) {
 // Event listener for submission checkbox
 submissionCheckbox.addEventListener('change', (event) => {
     if (event.target.checked) {
-        showPopup(`Submission Status: ${submissionStatus}`);
-        console.log("Submission popup shown.");
+        //showPopup(`Submission Status: ${submissionStatus}`);
+        //console.log("Submission popup shown.");
     }
 });
 
 // Event listener for deadline checkbox
 deadlineCheckbox.addEventListener('change', (event) => {
     if (event.target.checked) {
-        showPopup(`The deadline is: ${deadlineTime}`);
-        console.log("Deadline popup shown.");
+        //showPopup(`The deadline is: ${deadlineTime}`);
+        //console.log("Deadline popup shown.");
     }
 });
 
 // Event listener for graded checkbox
 gradedCheckbox.addEventListener('change', (event) => {
     if (event.target.checked) {
-        showPopup(`Your grade is: ${gradeValue}`);
-        console.log("Grade popup shown.");
+        //showPopup(`Your grade is: ${gradeValue}`);
+        //console.log("Grade popup shown.");
     }
 });
 
@@ -247,8 +250,10 @@ function initializeDragAndDrop() {
     const fileInput = document.getElementById('file-input');
     const alternativeUploadBtn = document.getElementById('alternative-upload-btn');
     const downloadBtn = document.getElementById('download-btn');
+    const submitBtn = document.getElementById('submit-btn');
 
     let uploadedFile = null;
+    let files = null;
 
     // Highlight drop area on drag events
     dropArea.addEventListener('dragover', (event) => {
@@ -265,10 +270,8 @@ function initializeDragAndDrop() {
         event.preventDefault();
         dropArea.style.backgroundColor = '#ffffff';
 
-        const files = event.dataTransfer.files;
-        if (files.length > 0) {
-            handleFileUpload(files[0]);
-        }
+        files = event.dataTransfer.files;
+        submitBtn.disabled = false;
     });
 
     // Handle file selection via alternative upload button
@@ -277,10 +280,8 @@ function initializeDragAndDrop() {
     });
 
     fileInput.addEventListener('change', (event) => {
-        const files = event.target.files;
-        if (files.length > 0) {
-            handleFileUpload(files[0]);
-        }
+        files = event.target.files;
+        submitBtn.disabled = false;
     });
 
     // Handle file upload
@@ -304,5 +305,13 @@ function initializeDragAndDrop() {
         link.href = URL.createObjectURL(uploadedFile);
         link.download = uploadedFile.name;
         link.click();
+    });
+
+    // Submit button functionality
+    submitBtn.addEventListener('click', () => {
+        if (files.length > 0) {
+            handleFileUpload(files[0]);
+        }
+        submitBtn.disabled = true;
     });
 }

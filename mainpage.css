@@ -266,7 +266,8 @@ main {
 }
 
 .alternative-upload-btn,
-.download-btn {
+.download-btn,
+.submit-btn {
     padding: 10px 20px;
     background-color: #0078d4;
     color: white;
@@ -278,7 +279,9 @@ main {
     width: 150px; /* Optional: Ensures uniform button width */
 }
 
-.download-btn:disabled {
+
+.download-btn:disabled,
+.submit-btn:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
