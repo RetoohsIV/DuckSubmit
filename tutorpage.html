@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Screen</title>
+    <link rel="stylesheet" href="tutorpage.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">Ducksubmit</div>
+        <div class="header-right">
+            <a href="#" class="header-link">Overview</a>
+            <a href="#" class="header-link" id="settings-link">Tutor</a>
+            <div id="settings-email-alerts" class="dropdown">
+                <label><input type="checkbox" id="submission"> Submission</label>
+                <label><input type="checkbox" id="graded"> Graded</label>
+                <label><input type="checkbox" id="deadline"> Deadline</label>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="vertical-menu" id="menu-container">
+			
+        </div>
+    </main>
+	<!-- Popup Modal for Setting -->
+    <div id="popup-modal" class="popup-modal">
+        <div class="popup-content">
+            <span id="popup-close" class="popup-close">&times;</span>
+            <p id="popup-message"></p>
+        </div>
+    </div>
+	<!-- Overview Modal -->
+	<div id="overview-modal" class="overview-modal">
+		<div class="overview-content">
+			<span id="overview-close" class="overview-close">&times;</span>
+			<h3>Course Overview</h3>
+			<ul id="course-overview-list"></ul>
+		</div>
+	</div>
+
+</body>
+<script src="tutorpage.js"></script>
+</html>
