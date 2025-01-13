@@ -129,7 +129,13 @@ document.getElementById('deadline').addEventListener('change', function(event) {
     console.log('Deadline:', event.target.checked);
 });
 
+const logoutbutton = document.getElementById('logout-link');
 
+logoutbutton.addEventListener('click', function(event) {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("username");
+    window.location.href = 'login.html';
+});
 //* Feedback for setting *//
 // Get popup modal elements
 const popupModal = document.getElementById('popup-modal');
