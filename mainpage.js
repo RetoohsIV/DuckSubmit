@@ -243,6 +243,13 @@ window.addEventListener('click', (event) => {
     }
 });
 
+// Close the setting dropdown when clicking anywhere outside
+window.addEventListener('click', function(event) {
+    if (!settingsLink.contains(event.target) && !settingsemailalerts.contains(event.target)) {
+        settingsemailalerts.style.display = 'none';
+    }
+});
+
 //* drag and drop function*//
 // Function to initialize drag-and-drop functionality
 function initializeDragAndDrop() {
