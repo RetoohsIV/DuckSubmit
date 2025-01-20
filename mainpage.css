@@ -265,7 +265,20 @@ main {
     margin-top: 10px; /* Adds spacing between the buttons */
 }
 
-.alternative-upload-btn,
+.alternative-upload-btn {
+    padding: 15px 30px; /* Increases padding for a larger button */
+    font-size: 18px; /* Increases the font size */
+    background-color: #0078d4; /* Keeps the color consistent */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 200px; /* Optional: Specifies a larger width */
+    height: 60px; /* Optional: Specifies a larger height */
+    text-align: center; /* Ensures the text is centered */
+}
+
 .download-btn,
 .submit-btn {
     padding: 10px 20px;
@@ -290,3 +303,22 @@ main {
 .alternative-upload-btn:hover {
     background-color: #005bb5;
 }
+
+/*Duck*/
+.duck-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.duck {
+    width: 300px;
+    height: auto;
+    display: none;
+}
+
+#duck-sleeping {
+    display: block; /* Show the sleeping duck by default */
+}
+

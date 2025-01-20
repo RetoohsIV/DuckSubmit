@@ -283,25 +283,32 @@ function initializeDragAndDrop() {
         event.preventDefault();
         dropArea.style.backgroundColor = '#ffffff';
 
-        files = event.dataTransfer.files;
+        const files = event.dataTransfer.files;
+		const allowedTypes = ['application/zip', 'application/pdf'];
 
-        const allowedTypes = ['application/zip', 'application/pdf'];
-        if (!allowedTypes.includes(files[0].type)) {
-            alert('Invalid file type. Please upload a ZIP or PDF file.');
-            return;
-        }
+		// Check file type
+		if (files.length > 0 && !allowedTypes.includes(files[0].type)) {
+			showDuck('angry'); // Show the angry duck
+			setTimeout(() => {
+				showDuck('sleeping'); // Return to sleeping duck after 3 seconds
+			}, 3000);
+			return;
+		}
 
-        if (files.length > 0) {
-            uploadedFile = files[0];
-            dropArea.innerHTML = `
-                <img src="images/file-symbol.jpeg" alt="Upload Icon" class="upload-icon">
-                <p>${uploadedFile.name}</p> <!-- Display the file name here -->
-                <p class="supported-types">Supports: ZIP, PDF</p>
-            `;
-
-            submitBtn.disabled = false;
-        }
-    });
+		// If file is valid
+		if (files.length > 0) {
+			uploadedFile = files[0];
+			dropArea.innerHTML = `
+				<img src="images/file-symbol.jpeg" alt="Upload Icon" class="upload-icon">
+				<p>${uploadedFile.name}</p> <!-- Display the file name here -->
+				<p class="supported-types">Supports: ZIP, PDF</p>
+			`;
+			showDuck('informative'); // Show the informative duck
+			setTimeout(() => {
+				showDuck('sleeping'); // Return to sleeping duck after 3 seconds
+			}, 3000);
+		}
+	});
 
     // Handle file selection via alternative upload button
     alternativeUploadBtn.addEventListener('click', () => {
@@ -309,11 +316,14 @@ function initializeDragAndDrop() {
     });
 
     fileInput.addEventListener('change', (event) => {
-        files = event.target.files;
-
+        const files = event.target.files;
         const allowedTypes = ['application/zip', 'application/pdf'];
-        if (!allowedTypes.includes(files[0].type)) {
-            alert('Invalid file type. Please upload a ZIP or PDF file.');
+		
+       if (files.length > 0 && !allowedTypes.includes(files[0].type)) {
+            showDuck('angry'); // Show angry duck for invalid files
+            setTimeout(() => {
+                showDuck('sleeping'); // Return to sleeping duck
+            }, 3000);
             return;
         }
 
@@ -321,21 +331,17 @@ function initializeDragAndDrop() {
             uploadedFile = files[0];
             dropArea.innerHTML = `
                 <img src="images/file-symbol.jpeg" alt="Upload Icon" class="upload-icon">
-                <p>${uploadedFile.name}</p> <!-- Display the file name here -->
+                <p>${uploadedFile.name}</p>
                 <p class="supported-types">Supports: ZIP, PDF</p>
             `;
-
-            submitBtn.disabled = false;
+            submitBtn.disabled = false; // Enable submit button
+            showDuck('informative'); // Show informative duck
+            setTimeout(() => {
+                showDuck('sleeping'); // Return to sleeping duck
+            }, 3000);
         }
     });
 
-    // Handle file upload
-    function handleFileUpload(file) {
-
-        uploadedFile = file;
-        alert(`File "${file.name}" uploaded successfully.`);
-        downloadBtn.disabled = false;
-    }
 
     // Download button functionality
     downloadBtn.addEventListener('click', () => {
@@ -348,17 +354,39 @@ function initializeDragAndDrop() {
     });
 
     // Submit button functionality
-    submitBtn.addEventListener('click', () => {
-        if (files.length > 0) {
-            handleFileUpload(files[0]);
+   submitBtn.addEventListener('click', () => {
+        if (uploadedFile) {
+            alert(`File "${uploadedFile.name}" submitted successfully!`);
         }
         submitBtn.disabled = true;
 
+        // Reset drop area
         dropArea.innerHTML = `
-        <img src="images/file-symbol.jpeg" alt="Upload Icon" class="upload-icon">
-        <p>Drag & Drop your file here</p>
-        <p class="supported-types">Supports: ZIP, PDF</p>
-    `;
-
+            <img src="images/file-symbol.jpeg" alt="Upload Icon" class="upload-icon">
+            <p>Drag & Drop your file here</p>
+            <p class="supported-types">Supports: ZIP, PDF</p>
+        `;
     });
+}
+
+
+// Function to show specific duck
+function showDuck(type) {
+    const sleepingDuck = document.getElementById('duck-sleeping');
+    const angryDuck = document.getElementById('duck-angry');
+    const informativeDuck = document.getElementById('duck-informative');
+
+    // Hide all ducks first
+    sleepingDuck.style.display = 'none';
+    angryDuck.style.display = 'none';
+    informativeDuck.style.display = 'none';
+
+    // Show the specific duck
+    if (type === 'sleeping') {
+        sleepingDuck.style.display = 'block';
+    } else if (type === 'angry') {
+        angryDuck.style.display = 'block';
+    } else if (type === 'informative') {
+        informativeDuck.style.display = 'block';
+    }
 }
