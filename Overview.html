@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuckSubmit Student</title>
+    <link rel="stylesheet" href="Overview.css">
+</head>
+<body>
+   <header>
+        <div class="header-left">DuckSubmit</div>
+        <div class="header-right">
+            <a href="login.html" class="header-link" id="logout-link">Logout</a>
+			<a href="mainpage.html" class="header-link">Main Page</a>
+            <a href="#" class="header-link" id="settings-link">Settings</a>
+			<div id="settings-email-alerts" class="dropdown">
+                <label> E-Mail-alerts</label>
+                <label><input type="checkbox" id="submission"> Submission</label>
+                <label><input type="checkbox" id="graded"> Graded</label>
+                <label><input type="checkbox" id="deadline"> Deadline</label>
+            </div>
+        </div>
+    </header>
+
+   <main>
+    <div class="table-container">
+        <table id="filterable-table">
+            <thead>
+                <tr>
+                    <!-- Assignment Name Filter -->
+                    <th>
+                        <select id="name-filter">
+                            <option value="">All Assignments</option>
+                        </select>
+                    </th>
+
+                    <!-- Deadline Column (Clickable for Sorting) -->
+                    <th id="deadline-header" style="cursor: pointer;">
+                        Deadline ▲
+                    </th>
+
+                    <!-- Status Filter -->
+                    <th>
+                        <select id="status-filter">
+                            <option value="">All Statuses</option>
+                        </select>
+                    </th>
+
+                    <!-- Download Column -->
+                    <th>Download</th>
+
+                    <!-- Feedback Column -->
+                    <th>Feedback</th>
+
+                    <!-- Grade Filter -->
+                    <th>
+                        <select id="grade-filter">
+                            <option value="">All Grades</option>
+                        </select>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Rows will be dynamically generated via JavaScript -->
+            </tbody>
+        </table>
+    </div>
+	</main>
+
+
+    <script src="overview.js"></script> <!-- Link to your JavaScript file -->
+</body>
+</html>
+
