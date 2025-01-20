@@ -138,7 +138,7 @@ main {
 /* Table Container */
 .table-container {
     margin: 20px auto;
-    max-width: 900px;
+    max-width: 1500px;
     overflow-x: auto;
     background-color: #f9f9f9;
     border-radius: 8px;
@@ -169,6 +169,7 @@ tbody tr:nth-child(even) {
 tbody tr:hover {
     background-color: #e8f0ff;
 }
+
 
 /* Dropdown Filters */
 select {

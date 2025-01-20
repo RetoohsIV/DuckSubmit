@@ -22,37 +22,31 @@
         </div>
     </header>
 
-   <main>
+  <main>
     <div class="table-container">
         <table id="filterable-table">
             <thead>
                 <tr>
-                    <!-- Assignment Name Filter -->
+                    <th>
+                        <select id="course-filter">
+                            <option value="">All Courses</option>
+                        </select>
+                    </th>
                     <th>
                         <select id="name-filter">
                             <option value="">All Assignments</option>
                         </select>
                     </th>
-
-                    <!-- Deadline Column (Clickable for Sorting) -->
-                    <th id="deadline-header" style="cursor: pointer;">
-                        Deadline ▲
-                    </th>
-
-                    <!-- Status Filter -->
+                    <th id="deadline-header">Deadline
+					<button id="sort-deadline-btn" class="sort-button">▼</button>
+					</th>
                     <th>
-                        <select id="status-filter">
-                            <option value="">All Statuses</option>
-                        </select>
-                    </th>
-
-                    <!-- Download Column -->
+						<select id="status-filter">
+						<option value="">Status</th>
+						</select>
+					</th>
                     <th>Download</th>
-
-                    <!-- Feedback Column -->
                     <th>Feedback</th>
-
-                    <!-- Grade Filter -->
                     <th>
                         <select id="grade-filter">
                             <option value="">All Grades</option>
@@ -60,6 +54,13 @@
                     </th>
                 </tr>
             </thead>
+            <tbody id="table-body">
+                <!-- Rows will be dynamically generated -->
+            </tbody>
+        </table>
+    </div>
+</main>
+
             <tbody id="table-body">
                 <!-- Rows will be dynamically generated via JavaScript -->
             </tbody>
