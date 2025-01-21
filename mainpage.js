@@ -65,6 +65,7 @@ coursesarray.forEach((coursename) => {
 			<p class="supported-types">Supports: ZIP, PDF</p>
 			<input type="file" id="file-input" accept=".zip, .pdf" style="display: none;">
 		</div>
+		<p id="error-message" class="error-message" style="display: none; color: red; font-weight: bold;"></p>
 		<div class="button-container">
 			<button id="alternative-upload-btn" class="alternative-upload-btn">Upload File</button>
 		</div>
@@ -75,8 +76,6 @@ coursesarray.forEach((coursename) => {
 			<button id="submit-btn" class="submit-btn" disabled>Submit</button>
 		</div>
 	`;
-
-
 
         // Initialize drag-and-drop functionality for this course
         initializeDragAndDrop();
@@ -152,128 +151,26 @@ const submissionStatus = "Submitted successfully!";
 const deadlineTime = "2025-01-31 23:59";
 const gradeValue = "A+";
 
-// Function to show popup with a message
-function showPopup(message) {
-    popupMessage.textContent = message; // Set the popup message
-    popupModal.style.display = 'flex'; // Show the modal
-}
 
-// Event listener for submission checkbox
-submissionCheckbox.addEventListener('change', (event) => {
-    if (event.target.checked) {
-        //showPopup(`Submission Status: ${submissionStatus}`);
-        //console.log("Submission popup shown.");
-    }
-});
-
-// Event listener for deadline checkbox
-deadlineCheckbox.addEventListener('change', (event) => {
-    if (event.target.checked) {
-        //showPopup(`The deadline is: ${deadlineTime}`);
-        //console.log("Deadline popup shown.");
-    }
-});
-
-// Event listener for graded checkbox
-gradedCheckbox.addEventListener('change', (event) => {
-    if (event.target.checked) {
-        //showPopup(`Your grade is: ${gradeValue}`);
-        //console.log("Grade popup shown.");
-    }
-});
-
-// Close the popup when the close button is clicked
-popupClose.addEventListener('click', () => {
-    popupModal.style.display = 'none'; // Hide the modal
-});
-
-// Close the popup when clicking outside the content
-window.addEventListener('click', (event) => {
-    if (event.target === popupModal) {
-        popupModal.style.display = 'none'; // Hide the modal
-    }
-});
-
-//* Overview setting*//
-// data for courses and their statuses for overview
-const coursesStatus = [
-    { name: "G.d Mensch-Computer Interaktion", submission: "Submitted", deadline: "2025-01-31", grade: "A+" },
-    { name: "G.d Betriebssysteme", submission: "Not Submitted", deadline: "2025-02-15", grade: "B" },
-    { name: "Lineare Algebra", submission: "Submitted", deadline: "2025-01-25", grade: "A" },
-    { name: "Data Science", submission: "In Progress", deadline: "2025-03-01", grade: "Pending" },
-    { name: "Diskrete Strukturen", submission: "Not Submitted", deadline: "2025-02-10", grade: "C" },
-];
-
-// Get Overview modal elements
-const overviewModal = document.getElementById('overview-modal');
-const overviewList = document.getElementById('course-overview-list');
-const overviewClose = document.getElementById('overview-close');
-const overviewLink = document.querySelector('.header-link[href="#"]'); // Assuming Overview is the first link
-
-// Function to display the Overview modal
-function showOverviewModal() {
-    // Clear any existing list items
-    overviewList.innerHTML = '';
-
-    // Populate the list with course statuses
-    coursesStatus.forEach(course => {
-        const listItem = document.createElement('li');
-        listItem.innerHTML = `
-            <strong>Course:</strong> ${course.name}<br>
-            <strong>Submission Status:</strong> ${course.submission}<br>
-            <strong>Deadline:</strong> ${course.deadline}<br>
-            <strong>Grade:</strong> ${course.grade}
-        `;
-        overviewList.appendChild(listItem);
-    });
-
-    // Show the modal
-    overviewModal.style.display = 'flex';
-}
-
-// Event listener for the Overview link
-overviewLink.addEventListener('click', (event) => {
-    event.preventDefault(); // Prevent default anchor behavior
-    showOverviewModal();
-});
-
-// Close the modal when the close button is clicked
-overviewClose.addEventListener('click', () => {
-    overviewModal.style.display = 'none';
-});
-
-// Close the modal when clicking outside the content
-window.addEventListener('click', (event) => {
-    if (event.target === overviewModal) {
-        overviewModal.style.display = 'none';
-    }
-});
-
-// Close the setting dropdown when clicking anywhere outside
-window.addEventListener('click', function(event) {
-    if (!settingsLink.contains(event.target) && !settingsemailalerts.contains(event.target)) {
-        settingsemailalerts.style.display = 'none';
-    }
-});
 
 //* drag and drop function*//
-// Function to initialize drag-and-drop functionality
+// Function to initialize drag-and-drop and upload functionality
 function initializeDragAndDrop() {
     const dropArea = document.getElementById('drop-area');
     const fileInput = document.getElementById('file-input');
     const alternativeUploadBtn = document.getElementById('alternative-upload-btn');
+    const liveMessage = document.getElementById('live-message'); // Reference for live message
+    const allowedTypes = ['application/zip', 'application/pdf'];
     const downloadBtn = document.getElementById('download-btn');
     const submitBtn = document.getElementById('submit-btn');
 
-    let uploadedFile = null;
-    let files = null;
-
-    // Highlight drop area on drag events
+    // Handle dragover event
     dropArea.addEventListener('dragover', (event) => {
         event.preventDefault();
         dropArea.style.backgroundColor = '#f0f8ff';
     });
 
+    // Handle dragleave event
     dropArea.addEventListener('dragleave', () => {
         dropArea.style.backgroundColor = '#ffffff';
     });
@@ -284,91 +181,80 @@ function initializeDragAndDrop() {
         dropArea.style.backgroundColor = '#ffffff';
 
         const files = event.dataTransfer.files;
-		const allowedTypes = ['application/zip', 'application/pdf'];
-
-		// Check file type
-		if (files.length > 0 && !allowedTypes.includes(files[0].type)) {
-			showDuck('angry'); // Show the angry duck
-			setTimeout(() => {
-				showDuck('sleeping'); // Return to sleeping duck after 3 seconds
-			}, 3000);
-			return;
-		}
-
-		// If file is valid
-		if (files.length > 0) {
-			uploadedFile = files[0];
-			dropArea.innerHTML = `
-				<img src="images/file-symbol.jpeg" alt="Upload Icon" class="upload-icon">
-				<p>${uploadedFile.name}</p> <!-- Display the file name here -->
-				<p class="supported-types">Supports: ZIP, PDF</p>
-			`;
-			showDuck('informative'); // Show the informative duck
-			setTimeout(() => {
-				showDuck('sleeping'); // Return to sleeping duck after 3 seconds
-			}, 3000);
-		}
-	});
-
-    // Handle file selection via alternative upload button
-    alternativeUploadBtn.addEventListener('click', () => {
-        fileInput.click();
-    });
-
-    fileInput.addEventListener('change', (event) => {
-        const files = event.target.files;
-        const allowedTypes = ['application/zip', 'application/pdf'];
-		
-       if (files.length > 0 && !allowedTypes.includes(files[0].type)) {
-            showDuck('angry'); // Show angry duck for invalid files
-            setTimeout(() => {
-                showDuck('sleeping'); // Return to sleeping duck
-            }, 3000);
-            return;
-        }
 
         if (files.length > 0) {
-            uploadedFile = files[0];
+            const uploadedFile = files[0];
+
+            // Check file type
+            if (!allowedTypes.includes(uploadedFile.type)) {
+                showDuck('angry');
+                displayLiveMessage("Invalid file type. Please upload a ZIP or PDF file.", 'error');
+                return;
+            }
+
+            // Valid file
             dropArea.innerHTML = `
                 <img src="images/file-symbol.jpeg" alt="Upload Icon" class="upload-icon">
-                <p>${uploadedFile.name}</p>
+                <p>${uploadedFile.name}</p> <!-- Display the file name -->
                 <p class="supported-types">Supports: ZIP, PDF</p>
             `;
-            submitBtn.disabled = false; // Enable submit button
-            showDuck('informative'); // Show informative duck
+            showDuck('informative');
+            displayLiveMessage("File uploaded successfully!", 'success');
+
+            // Enable download and submit buttons
+            downloadBtn.disabled = false;
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Handle file selection via the upload button
+    alternativeUploadBtn.addEventListener('click', () => {
+        fileInput.click(); // Trigger the hidden file input
+    });
+
+    // Handle file input change
+    fileInput.addEventListener('change', (event) => {
+        const files = event.target.files;
+
+        if (files.length > 0) {
+            const uploadedFile = files[0];
+
+            if (!allowedTypes.includes(uploadedFile.type)) {
+                showDuck('angry');
+                displayLiveMessage("Invalid file type. Please upload a ZIP or PDF file.", 'error');
+                return;
+            }
+
+            // Valid file
+            dropArea.innerHTML = `
+                <img src="images/file-symbol.jpeg" alt="Upload Icon" class="upload-icon">
+                <p>${uploadedFile.name}</p> <!-- Display the file name -->
+                <p class="supported-types">Supports: ZIP, PDF</p>
+            `;
+            showDuck('informative');
+            displayLiveMessage("File uploaded successfully!", 'success');
+
+            // Enable download and submit buttons
+            downloadBtn.disabled = false;
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Function to display live messages
+    function displayLiveMessage(message, type) {
+        liveMessage.textContent = message;
+        liveMessage.className = `live-message ${type} show`; // Add appropriate styling
+        liveMessage.style.display = 'block';
+
+        setTimeout(() => {
+            liveMessage.classList.remove('show'); // Fade out the message
             setTimeout(() => {
+                liveMessage.style.display = 'none'; // Fully hide the message after animation
                 showDuck('sleeping'); // Return to sleeping duck
-            }, 3000);
-        }
-    });
-
-
-    // Download button functionality
-    downloadBtn.addEventListener('click', () => {
-        if (!uploadedFile) return;
-
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(uploadedFile);
-        link.download = uploadedFile.name;
-        link.click();
-    });
-
-    // Submit button functionality
-   submitBtn.addEventListener('click', () => {
-        if (uploadedFile) {
-            alert(`File "${uploadedFile.name}" submitted successfully!`);
-        }
-        submitBtn.disabled = true;
-
-        // Reset drop area
-        dropArea.innerHTML = `
-            <img src="images/file-symbol.jpeg" alt="Upload Icon" class="upload-icon">
-            <p>Drag & Drop your file here</p>
-            <p class="supported-types">Supports: ZIP, PDF</p>
-        `;
-    });
+            }, 500); // Match fade-out duration in CSS
+        }, 3000); // Display the message for 3 seconds
+    }
 }
-
 
 // Function to show specific duck
 function showDuck(type) {
