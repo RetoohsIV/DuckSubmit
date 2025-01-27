@@ -50,7 +50,7 @@ main {
 /*------ Vertical Menu ( Select course ) ------ */
 .vertical-menu {
     width: 400px;
-    height: 400px;
+    height: 480px;
     overflow-y: auto;
     background-color:#f0f3d6;
     border-radius: 5px;
